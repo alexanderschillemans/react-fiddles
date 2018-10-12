@@ -8,6 +8,7 @@ export class TodoContainer extends React.Component {
         super(props);
         
         this.addTodo = this.addTodo.bind(this);
+        this.removeTodo = this.removeTodo.bind(this);
 
         this.state = {
             todos: []
@@ -20,13 +21,24 @@ export class TodoContainer extends React.Component {
         });
     }
 
+    removeTodo(todo) {
+        const newTodos = [...this.state.todos]
+        const indexOf = newTodos.indexOf(todo);
+        newTodos.splice(indexOf, 1);
+
+        this.setState({
+            todos: newTodos
+        });
+
+    }
+
     render() {
         return (
             <div className="card">
                 <h1>My To-Do's!</h1>
                 <p>What are you up to today?</p>
                 <TodoInput addTodo={this.addTodo} />
-                <TodoList todos={this.state.todos} />
+                <TodoList todos={this.state.todos} remove={this.removeTodo} />
             </div>
         );
     }

@@ -9,8 +9,13 @@ export class TodoInput extends React.Component {
 
     handleKeyPress(e) {
         if (e.key === 'Enter') {
-            this.props.addTodo(e.target.value);
-            e.target.value = '';
+            if (e.target.value !== '') {
+                this.props.addTodo(e.target.value);
+                e.target.value = '';
+            } else {
+                alert('Please input something!');
+            }
+            
         }
     }
 
