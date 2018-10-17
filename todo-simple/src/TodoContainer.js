@@ -8,37 +8,85 @@ export class TodoContainer extends React.Component {
         super(props);
         
         this.addTodo = this.addTodo.bind(this);
-        this.removeTodo = this.removeTodo.bind(this);
+        this.changeActions = this.changeActions.bind(this);
 
         this.state = {
-            todos: []
+            todos: [
+                {
+                    id: '5484-hallo',
+                    name: 'hallo',
+                    isCompleted: false
+                },
+                {
+                    id: '14555-hoe',
+                    name: 'hoe',
+                    isCompleted: false
+                },
+                {
+                    id: '254410-gaat',
+                    name: 'gaat',
+                    isCompleted: false
+                },
+                {
+                    id: '354822-het',
+                    name: 'het',
+                    isCompleted: false
+                },
+            ]
         };
     }
 
     addTodo(todo) {
-        this.setState({
-            todos: [...this.state.todos, todo]
-        });
-    }
+        let random = Math.floor((Math.random() * 100000) + 1);
+        let id = random + '-' + todo;
+        
+        const newTodo = {
+            id: id,
+            name: todo,
+            isCompleted: false
+        };
 
-    removeTodo(todo) {
-        const newTodos = [...this.state.todos]
-        const indexOf = newTodos.indexOf(todo);
-        newTodos.splice(indexOf, 1);
+        let newTodos = JSON.parse(JSON.stringify(this.state.todos));
+        newTodos.push(newTodo);
 
         this.setState({
             todos: newTodos
         });
-
     }
+
+    changeActions(action, id, value = '') {
+        let newTodos = JSON.parse(JSON.stringify(this.state.todos));
+        const index = newTodos.findIndex(todo => todo.id === id);
+
+        switch (action) {
+            case 'UPDATE':
+                newTodos[index].name = value;
+                break;
+            case 'REMOVE':
+                newTodos.splice(index, 1);
+                break;
+            case 'COMPLETE':
+                newTodos[index].isCompleted = true;
+                break;
+            case 'UNCOMPLETE':
+                newTodos[index].isCompleted = false;
+                break;
+        }
+
+        this.setState({ todos: newTodos });
+    }
+
 
     render() {
         return (
             <div className="card">
-                <h1>My To-Do's!</h1>
-                <p>What are you up to today?</p>
-                <TodoInput addTodo={this.addTodo} />
-                <TodoList todos={this.state.todos} remove={this.removeTodo} />
+                <div className="card-content">
+                    <h1>My To-Do's!</h1>
+                    <p>What are you up to today?</p>
+                    <TodoInput addTodo={this.addTodo} />
+                    {/* <TodoList todos={this.state.todos} remove={this.removeTodo} update={this.updateTodo} complete={this.completeTodo} uncomplete={this.uncompleteTodo}/> */}
+                    <TodoList todos={this.state.todos} change={this.changeActions}/>
+                </div>
             </div>
         );
     }

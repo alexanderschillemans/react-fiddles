@@ -21,7 +21,9 @@ export class TodoInput extends React.Component {
 
     render() {
         return (
-            <input type="text" onKeyPress={this.handleKeyPress} placeholder="E.g. Watering the plants" />
+            <div className="input-field">
+                <input type="text" id="new_task" onKeyPress={this.handleKeyPress} placeholder="E.g. Water the plants" />
+            </div>
         );
     }
 }
